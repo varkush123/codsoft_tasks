@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Alexander Scottish — Online Portfolio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+
+  /* ================= TOKENS ================= */
+  :root{
+    --dark:      #2B2B2B;   /* navbar */
+    --hero:      #575757;   /* hero grey top */
+    --hero-deep: #454545;   /* hero grey bottom */
+    --white:     #FFFFFF;
+    --text-dark: #1B1B1B;
+    --text-body: #6B7280;
+    --blue:      #3E6FE0;
+    --blue-dark: #2F58C4;
+  }
+
+  *{ box-sizing:border-box; margin:0; padding:0; }
+  html{ scroll-behavior:smooth; }
+  @media (prefers-reduced-motion: reduce){ html{scroll-behavior:auto;} *{animation:none!important; transition:none!important;} }
+
+  body{
+    font-family:'Inter', sans-serif;
+    color: var(--text-body);
+    background: var(--white);
+    line-height:1.7;
+  }
+  a{ color:inherit; text-decoration:none; }
+  ul{ list-style:none; }
+  h1,h2{ font-family:'Poppins', sans-serif; color: var(--text-dark); }
+
+  .wrap{ max-width:1180px; margin:0 auto; padding:0 40px; }
+  a:focus-visible, button:focus-visible{ outline:2px solid var(--blue); outline-offset:3px; }
+
+  .btn{
+    display:inline-flex; align-items:center; gap:8px;
+    font-family:'Poppins', sans-serif; font-weight:600; font-size:0.8rem;
+    letter-spacing:0.03em; text-transform:uppercase;
+    padding:13px 28px;
+    background: var(--blue);
+    color:#fff; border:none; cursor:pointer;
+    transition: background .18s ease, transform .18s ease;
+  }
+  .btn:hover{ background: var(--blue-dark); transform: translateY(-2px); }
+
+  /* ================= HEADER ================= */
+  header{ background: var(--dark); position: sticky; top:0; z-index:50; }
+  .nav-bar{
+    display:flex; align-items:center; justify-content:space-between;
+    padding:20px 40px; max-width:1180px; margin:0 auto; gap:24px; flex-wrap:wrap;
+  }
+  .logo strong{ font-family:'Poppins', sans-serif; font-size:1.3rem; font-weight:700; color:#fff; display:block; }
+  .logo span{ font-size:0.78rem; color:#9AA0AA; display:block; margin-top:2px; }
+  nav ul{ display:flex; gap:20px; flex-wrap:wrap; }
+  nav a{
+    font-family:'Poppins', sans-serif; font-size:0.7rem; font-weight:600;
+    letter-spacing:0.04em; text-transform:uppercase; color:#C6CAD1;
+    position:relative; padding-bottom:4px;
+  }
+  nav a::after{
+    content:""; position:absolute; left:0; bottom:0; width:0; height:2px; background:var(--blue);
+    transition:width .2s ease;
+  }
+  nav a:hover, nav a:focus-visible{ color:#fff; }
+  nav a:hover::after{ width:100%; }
+
+  /* ================= HERO ================= */
+  .hero{
+    background: linear-gradient(180deg, var(--hero) 0%, var(--hero-deep) 100%);
+    position: relative;
+  }
+  .hero-inner{
+    display:grid;
+    grid-template-columns: 1fr 1fr;
+    align-items:center;
+    min-height: 420px;
+    gap: 20px;
+    position: relative;
+    z-index: 2;
+  }
+  .hero-copy{ padding: 60px 0; position:relative; z-index:3; max-width: 480px; }
+  .hero-copy h1{
+    color:#fff; font-size: clamp(1.7rem, 3.2vw, 2.3rem); font-weight:700;
+    letter-spacing:0.01em; margin-bottom:18px; text-transform:uppercase;
+  }
+  .hero-copy p{ color:#D6D9DD; max-width:46ch; font-size:0.98rem; margin-bottom:26px; }
+
+  /* Photo layer: absolutely positioned across the FULL hero (edge to
+     edge of the browser, not the inner .wrap), so the main photo can
+     bleed flush to the right side exactly like the reference. It sits
+     behind the copy (z-index 1) since the two never overlap spatially. */
+  .hero-photos{
+    position:absolute;
+    inset: 0;
+    z-index: 1;
+    pointer-events:none;
+  }
+  .photo-main{
+    position:absolute;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    width: 34%;
+    min-width: 260px;
+    max-width: 400px;
+    overflow:hidden;
+  }
+  .photo-main img, .photo-main svg{ width:100%; height:100%; object-fit:cover; display:block; }
+
+  .photo-small{
+    position:absolute;
+    bottom: -180px;
+    left: 10%;
+    width: 210px;
+    height: 300px;
+    overflow:hidden;
+    z-index: 2;
+    box-shadow: 0 18px 34px rgba(0,0,0,0.35);
+  }
+  .photo-small img, .photo-small svg{ width:100%; height:100%; object-fit:cover; display:block; }
+
+  /* No extra spacer needed: the hero's height is driven by its own
+     text content, and photo-small is allowed to visually bleed past
+     the hero's bottom edge (via negative "bottom") into the About
+     section below, sitting above it thanks to z-index. */
+
+  /* ================= ABOUT ================= */
+  #about{ background:var(--white); padding: 70px 0 90px; }
+  .about-grid{ display:grid; grid-template-columns: 320px 1fr; gap:56px; align-items:start; }
+  .about-photo{ background:#FAFAFA; aspect-ratio: 3 / 3.6; overflow:hidden; }
+  .about-photo img, .about-photo svg{ width:100%; height:100%; object-fit:cover; display:block; }
+
+  #about h2{
+    font-size:1.7rem; font-weight:700; position:relative; padding-bottom:16px; margin-bottom:16px;
+  }
+  #about h2::after{
+    content:""; position:absolute; left:0; bottom:0; width:46px; height:3px; background:var(--blue);
+  }
+  .about-bio p{ margin-bottom:16px; font-size:0.96rem; }
+  .about-bio p.lead{ color:var(--text-dark); font-weight:500; }
+
+  /* ================= RESPONSIVE ================= */
+  @media (max-width: 860px){
+    .hero-inner{ grid-template-columns:1fr; min-height:auto; padding-bottom: 280px; }
+    .hero-copy{ max-width:none; }
+    .photo-main{ top:0; bottom:auto; width: 55%; max-width:220px; height:260px; right: 8%; }
+    .photo-small{ width: 40%; max-width:160px; height:210px; left: 8%; bottom: -60px; }
+    .about-grid{ grid-template-columns:1fr; }
+    .about-photo{ max-width:300px; }
+    nav ul{ gap:14px; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="nav-bar">
+    <div class="logo">
+      <strong>Online Portfolio</strong>
+      <span>Just another My Blog site</span>
+    </div>
+    <nav aria-label="Primary">
+      <ul>
+        <li><a href="#top">Home</a></li>
+        <li><a href="#about">About Me</a></li>
+        <li><a href="#">Services</a></li>
+        <li><a href="#">Skill</a></li>
+        <li><a href="#">Testimonial</a></li>
+        <li><a href="#">Experience</a></li>
+        <li><a href="#">Works</a></li>
+        <li><a href="#">Blog</a></li>
+        <li><a href="#">Contact Us</a></li>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<!-- ================= HERO ================= -->
+<section id="top" class="hero">
+  <div class="hero-photos">
+    <div class="photo-main">
+      <!-- Replace with <img src="your-photo-1.jpg" alt="Your Name"> -->
+      <svg viewBox="0 0 300 400" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder portrait, main">
+        <defs>
+          <linearGradient id="bgMain" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#3a3a3a"/>
+            <stop offset="100%" stop-color="#1c1c1c"/>
+          </linearGradient>
+        </defs>
+        <rect width="300" height="400" fill="url(#bgMain)"/>
+        <path d="M10 400 L10 245 C10 148 68 96 150 96 C226 96 274 148 285 240 L290 400 Z" fill="#2E3239"/>
+        <path d="M10 400 L10 315 C55 336 245 336 290 315 L290 400 Z" fill="#1B1D22"/>
+        <circle cx="152" cy="80" r="60" fill="#C79A78"/>
+        <path d="M96 58 C96 24 128 8 152 8 C180 8 208 26 208 58 C208 44 196 38 182 40 C174 28 158 22 152 22 C140 22 128 30 118 42 C104 38 96 44 96 58 Z" fill="#241A12"/>
+        <ellipse cx="132" cy="82" rx="5" ry="6" fill="#160F0B"/>
+        <ellipse cx="176" cy="82" rx="5" ry="6" fill="#160F0B"/>
+        <path d="M136 104 Q152 112 168 104" fill="none" stroke="#7A5136" stroke-width="3" stroke-linecap="round"/>
+      </svg>
+    </div>
+    <div class="photo-small">
+      <!-- Replace with <img src="your-photo-2.jpg" alt="Your Name"> -->
+      <svg viewBox="0 0 230 300" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder portrait, small">
+        <defs>
+          <linearGradient id="bgSmall" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#2e2e2e"/>
+            <stop offset="100%" stop-color="#141414"/>
+          </linearGradient>
+        </defs>
+        <rect width="230" height="300" fill="url(#bgSmall)"/>
+        <path d="M8 300 L8 182 C8 108 54 72 115 72 C170 72 208 108 216 178 L220 300 Z" fill="#1D1F24"/>
+        <path d="M8 300 L8 236 C42 253 186 253 220 236 L220 300 Z" fill="#121317"/>
+        <circle cx="116" cy="60" r="46" fill="#B98A67"/>
+        <path d="M74 42 C74 16 98 4 116 4 C138 4 160 18 160 42 C160 32 150 27 139 29 C133 19 121 14 116 14 C107 14 97 20 89 30 C79 27 74 32 74 42 Z" fill="#1E160F"/>
+        <ellipse cx="101" cy="62" rx="4" ry="5" fill="#130D09"/>
+        <ellipse cx="134" cy="62" rx="4" ry="5" fill="#130D09"/>
+      </svg>
+    </div>
+  </div>
+
+  <div class="wrap hero-inner">
+    <div class="hero-copy">
+      <h1>Alexander Scottish</h1>
+      <p>Hi, I am a Professional Developer and ICT Degree holder. I have five years experience in IT Sector as an ICT Lecturer, I'd like...</p>
+      <a class="btn" href="#about">Hire Me</a>
+    </div>
+  </div>
+</section>
+
+<!-- ================= ABOUT ================= -->
+<section id="about">
+  <div class="wrap">
+    <div class="about-grid">
+      <div class="about-photo">
+        <!-- Replace with <img src="your-photo-3.jpg" alt="Your Name"> -->
+        <svg viewBox="0 0 320 384" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder portrait in about section">
+          <rect width="320" height="384" fill="#FAFAFA"/>
+          <path d="M30 384 L30 250 C30 163 88 110 160 110 C227 110 274 163 282 247 L284 384 Z" fill="#2E3239"/>
+          <path d="M30 384 L30 305 C74 325 246 325 284 305 L284 384 Z" fill="#23262C"/>
+          <circle cx="158" cy="84" r="59" fill="#C79A78"/>
+          <path d="M101 62 C101 30 132 14 158 14 C187 14 213 32 213 62 C213 50 202 44 190 46 C182 36 168 28 158 28 C146 28 132 36 122 48 C110 44 101 50 101 62 Z" fill="#2A1E16"/>
+          <ellipse cx="138" cy="86" rx="5" ry="6" fill="#2A2020"/>
+          <ellipse cx="178" cy="86" rx="5" ry="6" fill="#2A2020"/>
+          <path d="M140 118 Q158 126 176 118" fill="none" stroke="#8A5E42" stroke-width="3" stroke-linecap="round"/>
+        </svg>
+      </div>
+      <div class="about-bio">
+        <h2>About Me</h2>
+        <p class="lead">I Am Developer blends expertise with industry know-how to guide your next property development.</p>
+        <p>Software Developers use software development languages and tools to write, edit, maintain, and test computer software. Software Developers follow the software development lifecycle (SDLC) to plan, design, build, test, and deploy software applications, ranging from websites and mobile applications to web applications and video games. In addition to creating new software, Software Developers improve and maintain the working order of existing software.</p>
+        <a class="btn" href="resume.pdf" download>Download Resume</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+</body>
+</html>
